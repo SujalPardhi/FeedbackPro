@@ -18,6 +18,7 @@ const Login = () => {
     try {
       const user = await login(formData);
       if (user.role === 'student') navigate('/student-dashboard');
+      else if (user.role === 'admin') navigate('/admin');
       else navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.error || 'Invalid credentials');

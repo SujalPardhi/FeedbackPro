@@ -27,6 +27,10 @@ mongoose
   .then(async () => {
     console.log('MongoDB Connected');
 
+    const GlobalConfig = require('./models/GlobalConfig');
+    const config = await GlobalConfig.findOne({ key: 'feedback_active' });
+    console.log(`[BOOT] Feedback System Status: ${config ? (config.value ? 'DEPLOYED' : 'HELD') : 'NEVER DEPLOYED (Default: OFF)'}`);
+
     // Admin Account Seeding
     const User = require('./models/User');
     const adminExists = await User.findOne({ role: 'admin' });
@@ -34,12 +38,12 @@ mongoose
       console.log('No admin found. Creating default admin...');
       await User.create({
         name: 'Master Admin',
-        email: 'admin@prpote.edu',
-        password: 'password123', // Model hook will hash this
+        email: 'noreplyprpote@gmail.com',
+        password: 'adminprpote', // Model hook will hash this
         role: 'admin',
         isApproved: true
       });
-      console.log('Default admin created: admin@prpote.edu / password123');
+      console.log('Default admin created: noreplyprpote@gmail.com/ adminprpote');
     }
 
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

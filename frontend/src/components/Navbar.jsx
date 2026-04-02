@@ -33,7 +33,7 @@ const Navbar = () => {
             {user.role === 'teacher' && <Link to="/dashboard">Dashboard</Link>}
             {user.role === 'admin' && <Link to="/admin">Admin Panel</Link>}
             <button onClick={handleLogout} className="btn" style={{ marginLeft: '1.5rem', padding: '0.4rem 1rem' }}>
-              Logout ({user.name})
+              Logout - {user.name}
             </button>
           </>
         ) : (

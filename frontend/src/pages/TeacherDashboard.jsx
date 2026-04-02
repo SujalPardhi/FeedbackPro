@@ -54,14 +54,20 @@ const TeacherDashboard = () => {
         Welcome back, <strong>{user.name}</strong>. Here is the feedback for your subject securely gathered from students.
       </p>
       
-      <div className="dashboard-stats">
-        <div className="stat-card">
+      <div className="dashboard-stats" style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }}>
+        <div className="stat-card" style={{ background: 'linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)' }}>
           <div className="stat-number">{totalFeedback}</div>
-          <div>Total Student Reviews</div>
+          <div style={{ opacity: 0.9 }}>Total Student Reviews</div>
         </div>
-        <div className="stat-card">
+        <div className="stat-card" style={{ background: 'var(--accent-gradient)' }}>
           <div className="stat-number">{avgRating}</div>
-          <div>Average Rating (1-5)</div>
+          <div style={{ opacity: 0.9 }}>Average Rating - 5.0</div>
+        </div>
+        <div className="stat-card" style={{ background: avgRating >= 4 ? 'linear-gradient(135deg, #2ed573 0%, #7bed9f 100%)' : 'linear-gradient(135deg, #ffa502 0%, #ff7f50 100%)' }}>
+          <div className="stat-number" style={{ fontSize: '1.8rem', padding: '0.6rem 0' }}>
+            {avgRating >= 4 ? 'Excellent' : avgRating >= 3 ? 'Good' : avgRating > 0 ? 'Improvement' : 'Pending'}
+          </div>
+          <div style={{ opacity: 0.9 }}>Performance Status</div>
         </div>
       </div>
 

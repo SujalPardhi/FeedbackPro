@@ -35,7 +35,9 @@ const FeedbackList = () => {
 
   return (
     <div>
-      <h2 className="page-title">{user.role === 'teacher' ? 'Your Feedbacks' : 'My Feedbacks'}</h2>
+      <h2 className="page-title">
+        {user.role === 'admin' ? 'All Student Feedbacks' : (user.role === 'teacher' ? 'Your Feedbacks' : 'My Feedbacks')}
+      </h2>
       {feedbacks.length === 0 ? (
         <p className="text-center">No feedbacks found.</p>
       ) : (

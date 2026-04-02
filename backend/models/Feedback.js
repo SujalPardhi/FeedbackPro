@@ -11,6 +11,12 @@ const feedbackSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  responses: [
+    {
+      questionText: String,
+      rating: Number
+    }
+  ],
   rating: {
     type: Number,
     required: true,
