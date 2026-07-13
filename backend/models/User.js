@@ -34,6 +34,15 @@ const userSchema = new mongoose.Schema({
   rollNumber: {
     type: String,
   },
+  branch: {
+    type: String,
+  },
+  section: {
+    type: String,
+  },
+  academicYear: {
+    type: String,
+  },
   // Specific to teachers
   subjectName: {
     type: String,

@@ -122,24 +122,13 @@ const FeedbackForm = () => {
                     questions.map((q) => (
                     <div key={q._id} className="form-group" style={{ margin: 0 }}>
                         <label style={{ color: 'white !important', fontSize: '1rem !important', marginBottom: '1.2rem !important', fontWeight: '500!important' }}>{q.text}</label>
-                        <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
+                        <div className="rating-btns">
                         {[5, 4, 3, 2, 1].map((num) => (
                             <button
                             key={num}
                             type="button"
                             onClick={() => handleRatingChange(q._id, num)}
-                            style={{
-                                padding: '0.7rem 1.4rem',
-                                borderRadius: '14px',
-                                border: '1px solid var(--glass-border)',
-                                background: responses[q._id] === num ? 'var(--accent-gradient)' : 'rgba(255,255,255,0.03)',
-                                color: 'white',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                                fontWeight: responses[q._id] === num ? '700' : '400',
-                                transform: responses[q._id] === num ? 'scale(1.05)' : 'scale(1)',
-                                boxShadow: responses[q._id] === num ? '0 10px 20px rgba(255, 106, 0, 0.2)' : 'none'
-                            }}
+                            className={`rating-btn ${responses[q._id] === num ? 'active' : ''}`}
                             >
                             {num === 5 ? 'Excellent' : num === 4 ? 'Good' : num === 3 ? 'Average' : num === 2 ? 'Poor' : 'Fail'}
                             </button>

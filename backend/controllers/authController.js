@@ -12,14 +12,20 @@ const generateToken = (id) => {
 // @access  Public
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role, rollNumber, subjectName } = req.body;
+    const { name, email, password, role, rollNumber, branch, section, academicYear, subjectName } = req.body;
 
     if (!name || !email || !password || !role) {
       return res.status(400).json({ error: 'Please add all required fields' });
     }
 
-    if (role === 'student' && !rollNumber) {
-      return res.status(400).json({ error: 'Students must provide a roll number' });
+    if (role === 'student' && (!rollNumber || !branch || !academicYear)) {
+      return res.status(400).json({ error: 'Students must provide a roll number, branch, and academic year' });
+    }
+
+    // Only require section for specific branches if needed, or leave it optional
+    const branchRequiresSection = ['CSE', 'AIDS', 'AIML'].includes(branch);
+    if (role === 'student' && branchRequiresSection && !section) {
+       return res.status(400).json({ error: 'Please select a section for your branch' });
     }
 
     if (role === 'teacher' && !subjectName) {
@@ -39,6 +45,9 @@ const registerUser = async (req, res) => {
       password,
       role,
       rollNumber: role === 'student' ? rollNumber : undefined,
+      branch: role === 'student' ? branch : undefined,
+      section: role === 'student' ? section : undefined,
+      academicYear: role === 'student' ? academicYear : undefined,
       subjectName: role === 'teacher' ? subjectName : undefined
     });
 

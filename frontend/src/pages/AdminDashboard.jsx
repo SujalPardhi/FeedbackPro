@@ -106,7 +106,7 @@ const AdminDashboard = () => {
       <h2 className="page-title">Master Admin Control Panel</h2>
       
       {/* System Status and Control */}
-      <div style={{ background: stats.isActive ? 'rgba(40, 167, 69, 0.1)' : 'rgba(220, 53, 69, 0.1)', border: `1px solid ${stats.isActive ? '#28a745' : '#dc3545'}`, padding: '2rem', borderRadius: '24px', marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="admin-status-header" style={{ background: stats.isActive ? 'rgba(40, 167, 69, 0.1)' : 'rgba(220, 53, 69, 0.1)', border: `1px solid ${stats.isActive ? '#28a745' : '#dc3545'}`, padding: '2rem', borderRadius: '24px', marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
         <div>
           <h3 style={{ margin: 0, color: stats.isActive ? '#2ed573' : '#ff4757' }}>
             System Status: {stats.isActive ? 'DEPLOYED (Accepting Feedback)' : 'HELD (Paused)'}
@@ -125,7 +125,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="dashboard-stats" style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem' }}>
+      <div className="dashboard-stats">
         <div className="stat-card" style={{ background: 'linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)' }}>
           <div className="stat-number">{stats.totalStudents}</div>
           <div style={{ fontSize: '0.9rem', opacity: 0.9 }}>Total Students</div>
@@ -207,16 +207,16 @@ const AdminDashboard = () => {
 
         <form onSubmit={handleAddQuestion} style={{ borderTop: '1px solid var(--glass-border)', paddingTop: '2.5rem' }}>
           <h4 style={{ marginBottom: '1.5rem', fontSize: '1rem' }}>Add New Parameter</h4>
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             <input 
               type="text" 
               className="form-control" 
-              placeholder="e.g., Teaching Quality, Subject Knowledge, punctuality..." 
+              placeholder="e.g., Teaching Quality, Subject Knowledge..." 
               value={newQuestion}
               onChange={(e) => setNewQuestion(e.target.value)}
-              style={{ flex: 1 }}
+              style={{ flex: '1 1 300px' }}
             />
-            <button type="submit" className="btn">Add Parameter</button>
+            <button type="submit" className="btn" style={{ flex: '1 1 auto', justifyContent: 'center' }}>Add Parameter</button>
           </div>
         </form>
       </div>
@@ -251,7 +251,13 @@ const AdminDashboard = () => {
                       {u.role}
                     </td>
                     <td>
-                      {u.role === 'student' ? `Roll No: ${u.rollNumber}` : `Sub: ${u.subjectName}`}
+                      {u.role === 'student' ? (
+                        <div style={{ fontSize: '0.85rem', lineHeight: '1.4' }}>
+                          <div><strong>ID:</strong> {u.rollNumber}</div>
+                          <div><strong>Branch:</strong> {u.branch} | <strong>Sec:</strong> {u.section}</div>
+                          <div><strong>Year:</strong> {u.academicYear}</div>
+                        </div>
+                      ) : `Sub: ${u.subjectName}`}
                     </td>
                     <td style={{ display: 'flex', gap: '0.5rem' }}>
                       <button 

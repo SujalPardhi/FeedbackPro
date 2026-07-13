@@ -12,19 +12,6 @@ const ParticleBackground = () => {
     const particleCount = 100;
     const mouse = { x: null, y: null, radius: 150 };
 
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener('resize', resize);
-    resize();
-
-    window.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
-
     class Particle {
       constructor() {
         this.x = Math.random() * canvas.width;
@@ -44,8 +31,8 @@ const ParticleBackground = () => {
       }
 
       update() {
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
+        let dx = (mouse.x || 0) - this.x;
+        let dy = (mouse.y || 0) - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
         let forceDirectionX = dx / distance;
         let forceDirectionY = dy / distance;
@@ -72,7 +59,6 @@ const ParticleBackground = () => {
 
     const init = () => {
       particles = [];
-      // Generate particles in a grid for a cleaner look
       const step = 40;
       for (let y = 0; y < canvas.height; y += step) {
         for (let x = 0; x < canvas.width; x += step) {
@@ -86,37 +72,49 @@ const ParticleBackground = () => {
       }
     };
 
+    const connect = () => {
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a; b < particles.length; b++) {
+          let dx = particles[a].x - particles[b].x;
+          let dy = particles[a].y - particles[b].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 50) {
+            ctx.strokeStyle = `rgba(255, 106, 0, ${0.1 * (1 - distance / 50)})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+    };
+
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let i = 0; i < particles.length; i++) {
         particles[i].draw();
         particles[i].update();
       }
-      // Connect dots near mouse
       connect();
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    const connect = () => {
-       for (let a = 0; a < particles.length; a++) {
-         for (let b = a; b < particles.length; b++) {
-            let dx = particles[a].x - particles[b].x;
-            let dy = particles[a].y - particles[b].y;
-            let distance = Math.sqrt(dx * dx + dy * dy);
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      init();
+    };
 
-            if (distance < 50) {
-               ctx.strokeStyle = `rgba(255, 106, 0, ${0.1 * (1 - distance/50)})`;
-               ctx.lineWidth = 0.5;
-               ctx.beginPath();
-               ctx.moveTo(particles[a].x, particles[a].y);
-               ctx.lineTo(particles[b].x, particles[b].y);
-               ctx.stroke();
-            }
-         }
-       }
-    }
+    window.addEventListener('resize', resize);
+    resize();
 
-    init();
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
     animate();
 
     return () => {
@@ -136,7 +134,7 @@ const ParticleBackground = () => {
         height: '100vh',
         zIndex: -2,
         pointerEvents: 'none',
-        background: '#07070a'
+        background: 'transparent'
       }}
     />
   );
